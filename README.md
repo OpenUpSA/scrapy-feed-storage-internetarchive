@@ -1,6 +1,6 @@
 # scrapy-feed-storage-internetarchive
 
-This is a [Storage Backend](https://docs.scrapy.org/en/latest/topics/feed-exports.html#storages) for [Scrapy](https://scrapy.org/) [Item Feed](https://docs.scrapy.org/en/latest/topics/feed-exports.html) that uploads feed files to [archive.org](https://archive.org) when a scrape job ends.
+This is a [Storage Backend](https://docs.scrapy.org/en/latest/topics/feed-exports.html#storages) for [Scrapy](https://scrapy.org/) [Item Feeds](https://docs.scrapy.org/en/latest/topics/feed-exports.html) that uploads feed files to [archive.org](https://archive.org) when a scrape job ends.
 
 This was created to make it easy to archive data at the Internet Archive which you are authorised to distribute. e.g. to archive public data.
 
@@ -43,13 +43,11 @@ Only one level of path is allowed. This will be used as the filename, and will b
 
 Extra parameters can be provided as query string parameters, which will then be templated into the metadata values.
 
-You probably don't want to put credentials into your project settings module, since it can then easily be discovered if added to source control.
-
-You can set the `FEEDS` key in scrapinghub by providing the value dictionary as JSON on a single line in your spider's Raw Settings. e.g. for the following setting:
+e.g.
 
 ```
 FEEDS = {
-    "internetarchive://YourIAS3AccessKeyYourIAS3AccessKey:YourIAS3APISecretKey@archive.org/south-africa-%(name)s-%(time)s.csv?time=%(time)s&name=%(name)s&filetype=csv": {
+    "internetarchive://YourIAS3AccessKey:YourIAS3APISecretKey@archive.org/south-africa-%(name)s-%(time)s.csv?time=%(time)s&name=%(name)s&filetype=csv": {
         "format": "csv",
     },
     "internetarchive://YourIAS3AccessKey:YourIAS3APISecretKey@archive.org/south-africa-%(name)s-%(time)s.jsonlines?time=%(time)s&name=%(name)s&filetype=jsonlines": {
@@ -58,7 +56,12 @@ FEEDS = {
 }
 ```
 
-add the following line in the scrapinghub Raw settings:
+You probably don't want to put credentials into your project settings module, since it can then easily be discovered if added to source control. So try to set it in the environment where you will run your spider.
+
+
+### Scrapinghub
+
+You can set the `FEEDS` key in scrapinghub by providing the value dictionary as JSON on a single line in your spider's Raw Settings. For the above example, you would add the following line in the scrapinghub Raw settings:
 
 ```
 FEEDS = {"internetarchive://YourIAS3AccessKey:YourIAS3APISecretKey@archive.org/south-africa-%(name)s-%(time)s.csv?time=%(time)s&name=%(name)s": {"format": "csv"}, "internetarchive://YourIAS3AccessKey:YourIAS3APISecretKey@archive.org/south-africa-%(name)s-%(time)s.jsonlines?time=%(time)s&name=%(name)s": { "format": "jsonlines" }}
